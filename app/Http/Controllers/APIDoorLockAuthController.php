@@ -19,7 +19,8 @@ class APIDoorLockAuthController extends Controller
             ]);
             return ([
                 'response' => true,
-                'data' => $result
+                'data' => $result,
+                'card_detail' => $approved
             ]);
         }else{
             $result = DoorLockAuthLog::create([
