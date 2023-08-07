@@ -12,16 +12,29 @@ class APIDoorLockAuthController extends Controller
     {
         $approved = DoorLockCard::where('uid', $request['uid'])->first();
         if ($approved) {
-            $result = DoorLockAuthLog::create([
-                'uid' => $approved['uid'],
-                'location' => $request['location'],
-                'approved' => true
-            ]);
-            return ([
-                'response' => true,
-                'data' => $result,
-                'card_detail' => $approved
-            ]);
+            if($approved->disabled == false){
+                $result = DoorLockAuthLog::create([
+                    'uid' => $approved['uid'],
+                    'location' => $request['location'],
+                    'approved' => true
+                ]);
+                return ([
+                    'response' => true,
+                    'data' => $result,
+                    'card_detail' => $approved
+                ]);
+            }else{
+                $result = DoorLockAuthLog::create([
+                    'uid' => $approved['uid'],
+                    'location' => $request['location'],
+                    'approved' => false
+                ]);
+                return ([
+                    'response' => true,
+                    'data' => $result,
+                    'card_detail' => $approved
+                ]);
+            }
         }else{
             $result = DoorLockAuthLog::create([
                 'uid' => $request['uid'],
